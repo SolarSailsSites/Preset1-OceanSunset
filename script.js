@@ -1,22 +1,28 @@
-// --- 1. INTERACTION HELPERS ---
-function copyDiscordTag(tag) {
-    const tempInput = document.createElement('input');
-    tempInput.value = tag;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-    showToast('Copied Discord Tag to Clipboard!');
-}
+// --- 1. TAB SWITCHING & COPYRIGHT FOOTER MANAGEMENT ---
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabPanes = document.querySelectorAll('.tab-pane');
+const cardFooter = document.getElementById('cardFooter');
 
-function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.innerText = msg;
-    toast.classList.add('show');
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 2500);
-}
+tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabPanes.forEach(pane => pane.classList.remove('active'));
+
+        btn.classList.add('active');
+        const targetId = btn.getAttribute('data-target');
+        document.getElementById(targetId).classList.add('active');
+
+        // Show footer on 'about', hide on 'gallery'
+        if (targetId === 'gallery') {
+            cardFooter.style.display = 'none';
+        } else {
+            cardFooter.style.display = 'block';
+        }
+    });
+});
+
+// Automatically update copyright year
+document.getElementById('current-year').innerText = new Date().getFullYear();
 
 // --- 2. 60 FPS OPTIMIZED PROCEDURAL PIXEL ART SUNSET ENGINE ---
 const canvas = document.getElementById('sunsetCanvas');
@@ -62,9 +68,8 @@ for (let i = 0; i < numClouds; i++) {
     randomizeCloud(clouds[i], true);
 }
 
-// --- 60 FPS ACCUMULATOR TIMESTEP OPTIMIZATION ---
 const TARGET_FPS = 60;
-const FRAME_TIME = 1000 / TARGET_FPS; // ~16.66ms per tick
+const FRAME_TIME = 1000 / TARGET_FPS;
 let lastTime = performance.now();
 let accumulator = 0;
 
@@ -183,7 +188,6 @@ function renderFrame() {
                 }
             } else {
                 let reflectWave = Math.sin(y * 0.6 + time * 4.5) * 2.8 + Math.cos(x * 0.08 + time * 2.0) * 0.5;
-
                 let depthFactor = (y - horizon) / (V_HEIGHT - horizon);
                 let vScaleX = 1.40 + (depthFactor * 0.8);
 
@@ -298,7 +302,7 @@ function gameLoop(now) {
     let delta = now - lastTime;
     lastTime = now;
 
-    if (delta > 250) delta = 250; // Tab-switching protection
+    if (delta > 250) delta = 250;
 
     accumulator += delta;
 
@@ -322,15 +326,14 @@ requestAnimationFrame((now) => {
 });
 
 // --- 3. INTERACTIVE CLICK-TO-HIDE FOCUS CONTROLS ---
+const canvasElement = document.getElementById('sunsetCanvas');
 const overlay = document.getElementById('overlay');
-const hint = document.getElementById('hint');
 
 function toggleFocus() {
     overlay.classList.toggle('hidden');
-    hint.classList.toggle('hidden');
 }
 
-canvas.addEventListener('click', toggleFocus);
+canvasElement.addEventListener('click', toggleFocus);
 
 overlay.addEventListener('click', (e) => {
     if (e.target === overlay) {
@@ -344,5 +347,22 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-// Automatically update copyright year
-document.getElementById('current-year').innerText = new Date().getFullYear();
+// --- 4. IN-CARD GALLERY LIGHTBOX VIEWER ---
+const imageModal = document.getElementById('imageModal');
+const expandedModalImg = document.getElementById('expandedModalImg');
+
+function openImageModal(imgSrc) {
+    if (!imageModal || !expandedModalImg) return;
+    expandedModalImg.src = imgSrc;
+    imageModal.classList.add('active');
+}
+
+function closeImageModal() {
+    if (!imageModal) return;
+    imageModal.classList.remove('active');
+    setTimeout(() => {
+        if (!imageModal.classList.contains('active') && expandedModalImg) {
+            expandedModalImg.src = '';
+        }
+    }, 300);
+}

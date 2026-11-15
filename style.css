@@ -36,7 +36,7 @@ canvas {
 }
 
 
-/* 3. INTERACTIVE OVERLAY WRAPPER */
+/* 3. INTERACTIVE OVERLAY WRAPPER WITH PORTFOLIO SLIDE TRANSITION */
 
 .viewport-overlay {
     position: fixed;
@@ -48,15 +48,17 @@ canvas {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    pointer-events: none;
-    /* Allows clicking canvas through container */
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    padding: 16px;
+    padding-bottom: 50px;
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .viewport-overlay.hidden {
     opacity: 0;
-    transform: scale(0.96);
+    transform: translateY(-150vh) scale(0.95);
     pointer-events: none !important;
 }
 
@@ -66,19 +68,18 @@ canvas {
 .profile-card {
     background: rgba(12, 10, 20, 0.45);
     width: 100%;
-    max-width: 460px;
-    height: 82vh;
-    max-height: 640px;
+    max-width: 580px;
+    height: 88vh;
+    max-height: 720px;
     border-radius: 20px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     pointer-events: auto;
-    /* Re-enable clicking inside the card */
     position: relative;
 }
 
@@ -86,19 +87,19 @@ canvas {
 /* CARD HEADER */
 
 .card-header {
-    padding: 28px 24px 16px 24px;
+    padding: 20px 20px 12px 20px;
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
 }
 
 .avatar-frame {
-    width: 86px;
-    height: 86px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.2);
-    margin: 0 auto 12px auto;
-    background: #5865F2;
+    margin: 0 auto 8px auto;
+    background: #ffb74d;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     position: relative;
@@ -110,20 +111,9 @@ canvas {
     object-fit: cover;
 }
 
-.online-status {
-    position: absolute;
-    bottom: 4px;
-    right: 4px;
-    width: 16px;
-    height: 16px;
-    background: #23a55a;
-    border: 3px solid #0c0a14;
-    border-radius: 50%;
-}
-
 .username {
     color: #ffffff;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
     letter-spacing: 0.5px;
     margin-bottom: 2px;
@@ -131,22 +121,74 @@ canvas {
 
 .tagline {
     color: #ffb74d;
-    /* Sunset theme accent color */
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-family: 'Courier New', Courier, monospace;
     font-weight: 600;
+}
+
+
+/* TAB NAVIGATION */
+
+.nav-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.tab-btn.active {
+    background: rgba(255, 183, 77, 0.9);
+    border-color: #ffb74d;
+    color: #ffffff;
+    /* Keeps text bright white instead of turning dark */
+    box-shadow: 0 2px 10px rgba(255, 183, 77, 0.4);
 }
 
 
 /* INNER SCROLLABLE CONTENT BODY */
 
 .card-scroll-body {
-    padding: 20px 24px;
+    padding: 20px 20px 30px 20px;
     overflow-y: auto;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+}
+
+.tab-pane {
+    display: none;
+    flex-direction: column;
     gap: 20px;
+}
+
+.tab-pane.active {
+    display: flex;
 }
 
 
@@ -162,12 +204,12 @@ canvas {
 }
 
 .card-scroll-body::-webkit-scrollbar-thumb {
-    background: rgba(255, 183, 77, 0.3);
+    background: rgba(255, 183, 77, 0.5);
     border-radius: 10px;
 }
 
 .card-scroll-body::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 183, 77, 0.6);
+    background: rgba(255, 183, 77, 0.8);
 }
 
 .section-title {
@@ -181,7 +223,7 @@ canvas {
 
 .bio-text {
     color: #d1d5db;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     line-height: 1.5;
 }
 
@@ -205,16 +247,157 @@ canvas {
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.9rem;
-    transition: all 0.2s ease;
+    transition: background 0.2s ease, transform 0.1s ease;
     border: 1px solid rgba(255, 255, 255, 0.08);
     cursor: pointer;
 }
 
 .bio-link:hover {
-    background: rgba(255, 152, 0, 0.8);
+    background: rgba(255, 183, 77, 0.9);
+    color: #ffffff;
+    /* Keeps text crisp white instead of inverting */
     transform: translateY(-2px);
-    border-color: #ff9800;
-    box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+    border-color: #ffb74d;
+    box-shadow: 0 4px 15px rgba(255, 183, 77, 0.4);
+}
+
+
+/* GALLERY SECTION CARDS (2 Per Row) */
+
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Forces exactly 2 equal columns per row */
+    gap: 12px;
+}
+
+.preview-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-img-box {
+    width: 100%;
+    height: 120px;
+    /* Adjusted height to fit nicely in 2-column layout */
+    background: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: block;
+}
+
+.preview-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.preview-item:hover .preview-img-box img {
+    transform: scale(1.05);
+}
+
+.preview-link-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    text-align: center;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.review-lightbox-trigger {
+    cursor: pointer;
+}
+
+
+/* IN-CARD IMAGE MODAL LIGHTBOX VIEWER */
+
+.image-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 10, 20, 0.95);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.98);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+.modal-back-btn {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.modal-back-btn:hover {
+    background: rgba(255, 183, 77, 0.9);
+    color: #ffffff;
+    border-color: #ffb74d;
+    transform: translateX(-2px);
+}
+
+.modal-img-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.modal-img-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+
+/* RESPONSIVE PC STYLING */
+
+@media (min-width: 768px) {
+    .preview-grid {
+        flex-direction: row;
+    }
+    .preview-item {
+        flex: 1;
+    }
 }
 
 
@@ -222,23 +405,32 @@ canvas {
 
 .toggle-hint {
     position: fixed;
-    bottom: 16px;
+    bottom: 12px;
     left: 50%;
     transform: translateX(-50%);
     color: rgba(255, 255, 255, 0.6);
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-family: monospace;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 6px 14px;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 5px 12px;
     border-radius: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(4px);
     z-index: 3;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    white-space: nowrap;
+    transition: opacity 0.5s ease;
 }
 
-.toggle-hint.hidden {
+@media (min-width: 768px) {
+    .toggle-hint {
+        font-size: 0.75rem;
+        padding: 6px 14px;
+        bottom: 16px;
+    }
+}
+
+.viewport-overlay.hidden~.toggle-hint {
     opacity: 0;
 }
 
@@ -246,11 +438,10 @@ canvas {
 /* CARD FOOTER */
 
 .card-footer {
-    padding: 12px 24px 16px 24px;
+    padding: 12px 20px 14px 20px;
     text-align: center;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     color: #94a3b8;
-    /* Muted gray */
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     flex-shrink: 0;
 }
