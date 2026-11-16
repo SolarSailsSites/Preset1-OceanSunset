@@ -69,8 +69,8 @@ canvas {
     background: rgba(12, 10, 20, 0.45);
     width: 100%;
     max-width: 580px;
-    height: 88vh;
-    max-height: 720px;
+    height: 82vh;
+    max-height: 660px;
     border-radius: 20px;
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.08);
